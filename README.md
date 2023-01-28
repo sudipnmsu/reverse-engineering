@@ -22,3 +22,6 @@ After creating a new virtual machine, click ‘Start’ to install/launch. We wi
 
 ## Frequently Used Tools in Virtual Machine:
 
+To be continued...
+
+
