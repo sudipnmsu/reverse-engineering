@@ -18,9 +18,9 @@ MD5 Hash (exe): `bb7425b82141a1c0f7d60e5106676bb1`
 - A good way to look for the first compilation date. A new virus tends to be more dangerous than an old one.
 
 ## Mitigations
-Take necessary steps to disable (block/drop packages) the IP address. 
-Delete files matching with the hash(es).
-Look for `kerne1.dll` and delete it from `system32`.
+- Take necessary steps to disable (block/drop packages) the IP address. 
+- Delete files matching with the hash(es).
+- Look for `kerne1.dll` and delete it from `system32`.
 
 ## Evidence
 With the help of  `strings`, we see the presence of an IP address in the `.dll` file. Though the IP is a local address here, it may not be the case in an actual virus. We also see `kerne1.dll` which is similar to `kernel.dll` - this is an indication of hiding something suspicious using an almost similar name to one of the system files. 
