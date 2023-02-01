@@ -27,7 +27,25 @@ With the help of  `strings`, we see the presence of an IP address in the `.dll` 
 
 If we check the compilation time using `PEview`, the files were compiled at the same time. That makes it almost certain that the files are created by the same person and are helpers of each other.
 
-...
+
+# Lab 1-2
+
+## Executive Summary
+
+This file was packed using `upx`, which makes it suspicious because the malware creators often use packing or obfuscation techniques to avoid detection. After unpacking the file, we see an URL and some function names indicating that the program may be trying to open that specific URL and establish some sort of communication.
+
+## Indicators of Compromise
+- From basic `strings` analysis: `UPX0, UPX1, UPX2` are the indicators of being a packed file.
+- `http://www.malwareanalysisbook.com` URL and functions `InternetOpenUrlA` `InternetOpenA`.
+
+## Mitigations
+- Delete the file.
+- Monitor network for tracing the outgoing packages for the URL. 
+
+## Evidence
+As we do the basic analysis with `strings`, we find the `UPX0, UPX1, UPX2` strings showing that the file is packed by `upx`. We get further evidence by opening the file with PEview and confirm the presence of `SECTION UPX0/UPX1/UPX2`.
+
+Now after we unpack the file with `upx`, the strings are in a more readable shape. We see some interesting function names such as `InternetOpenUrlA` `InternetOpenA` and an URL http://www.malwareanalysisbook.com, but it is not clear if the URL is trying to transfer any or what kind of data. A possible approach could be creating a virtual machine and investigate further what the URL does.
 
 
 
