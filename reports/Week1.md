@@ -2,6 +2,12 @@
 
 This week we are going to learn about Static Analysis techniques using different tools such as strings, PEview and dependency-walker. We will also explore the VirusTotal tool (by Google) to see the analysis results of malware, scanned by lots of existing antivirus tools. We will not actually run any program at this point, the goal of this week is to extract useful information using static analysis techniques.
 
+## Tools:
+- `strings`: https://learn.microsoft.com/en-us/sysinternals/downloads/strings
+- `PEview`: http://wjradburn.com/software/
+- `dependency walker`: https://www.dependencywalker.com/
+- `upx`: https://upx.github.io/
+
 # Lab 1-1
 
 ## Executive Summary
