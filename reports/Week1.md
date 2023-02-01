@@ -12,8 +12,8 @@ According to the VirusTotal report, 60% of the antivirus tools mark the dll file
 - Monitor network to see if that particular IP (127.26.152.13) is sending anything concerning.
 - Check if the hashes are already identified as a virus by another program. 
 
-MD5 Hash (dll): 290934c61de9176ad682ffdd65f0a669
-MD5 Hash (exe): bb7425b82141a1c0f7d60e5106676bb1
+MD5 Hash (dll): `290934c61de9176ad682ffdd65f0a669`,
+MD5 Hash (exe): `bb7425b82141a1c0f7d60e5106676bb1`
 
 - A good way to look for the first compilation date. A new virus tends to be more dangerous than an old one.
 
