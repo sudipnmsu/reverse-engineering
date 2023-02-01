@@ -20,8 +20,15 @@ Launch VirtualBox and start installing the Windows OS by clicking the ‘New’ 
 
 After creating a new virtual machine, click ‘Start’ to install/launch. We will always make sure to disable any network interface, such as the internet, to keep the malware analysis in a confined space and keep the host computer safe.
 
-## Frequently Used Tools in Virtual Machine:
+## Frequently Used Tools:
 
-To be continued...
+As we progress, we will list down all the tools we are using.
 
+Week-1
 
+- `strings`: https://learn.microsoft.com/en-us/sysinternals/downloads/strings
+- `PEview`: http://wjradburn.com/software/
+- `dependency walker`: https://www.dependencywalker.com/
+- `upx`: https://upx.github.io/
+
+..
