@@ -12,7 +12,7 @@ A short summary of how to prepare the environment before starting with basic ana
 
 Reboot the VM and see the ip address using `ifconfig` command. Finally change ip addresses from line 69 and 207 from the file on this path `/etc/inetsim/inetsim.conf` and restart `inetsim` using `sudo service inetsim restart`.
 
-- **Windows XP VM:** The malwares seems to be crashing on a previously installed Windows 10 VM, so we will set up a [Windows XP] (https://download.cnet.com/Windows-XP-Mode/3001-18513_4-77683344.html) VM. After extracting with 7z, rename `VirtualXPVHD` to `VirtualXP.VHD` (or `VirtualXP.vdi` for linux host). Next, install 32 bit versions of `strings`, `PEview`, `dependency-walker`, `procmon`, `winshark`, `regshot` etc.
+- **Windows XP VM:** The malwares seems to be crashing on a previously installed Windows 10 VM, so we will set up a [Windows XP](https://download.cnet.com/Windows-XP-Mode/3001-18513_4-77683344.html) VM. After extracting with 7z, rename `VirtualXPVHD` to `VirtualXP.VHD` (or `VirtualXP.vdi` for linux host). Next, install 32 bit versions of `strings`, `PEview`, `dependency-walker`, `procmon`, `winshark`, `regshot` etc.
 
 We can connect to the fake internet that we configured on our other linux VM. Obtain the ip address of this Windows VM using `ipconfig` and change ip (windows), gateway (linux), DNS (linux) etc from `Control Panel > Network Connections > Properties > Internet Protocol (TCP/IP) > Properties`. If everything goes well, we will be able to see the `inetsim` default homepage from the `Internet Explorer` browser.
 
