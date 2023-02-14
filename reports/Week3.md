@@ -90,20 +90,24 @@ There are several `svchost.exe` listed on Process Explorer, we can search for `L
 
 ## Executive Summary
 
-
+This malware is a keylogger. We did not find any evidence that it has any networking capabilities and transferred the key-events to the external source.
 
 ## Indicators of Compromise
 
-
+- Significant dissimilarity between `Image` and `Memory` in impacted `svchost.exe`
+- `practicalmalwareanalysis.log` , [ENTER], [TAB] etc abnormal entries in strings.
+- MD5: `e2bf42217a67e46433da8b6f4507219e`.
 
 ## Mitigations
 
-
+- Delete malware and scan the computer with antivirus to ensure no process is still alive caused by this malware.
 
 ## Evidence
 
 For this malware, `string` analysis shows mostly unrecognizable strings and character ‘A’. The **Import Address Table** section in `PEview` lists down a bulk of imports where we see quite a few functions related to ‘Resource’, ‘Process’ and ‘File’ access. We still don’t know much about this malware from these imports and we are going to use dynamic analysis to understand more.
 
+We start analyzing with Process Explorer. If we double click on the malware exe file, it will create a new `svchost.exe` process. This is very hard to notice, it’s probably better to open two smaller windows and keep them side by side, click on the malware and see the new process being created. Then we navigate to the Properties and select Strings. The Memory block of strings show that there is a log file named `practicalmalwareanalysis.log`. There are other entries such as [ENTER], [TAB], [BACKSPACE] etc that lead us to believe that this program is a potential keylogger. 
 
+Now, open `procmon` and filter by the PID (which is 124 in this case) and try to edit a normal text document. We see that for each key press, there are four operations being executed - `CreateFile`, `QueryStandardInformationFile`, `WriteFile` and `CloseFile`. This further confirms our assumption that this virus is a keylogger.
 
 
