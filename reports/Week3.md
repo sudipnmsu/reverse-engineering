@@ -12,7 +12,7 @@ A short summary of how to prepare the environment before starting with basic ana
 
 Reboot the VM and see the ip address using `ifconfig` command. Finally change ip addresses from line 69 and 207 from the file on this path `/etc/inetsim/inetsim.conf` and restart `inetsim` using `sudo service inetsim restart`.
 
-- **Windows XP VM: ** The malwares seems to be crashing on a previously installed Windows 10 VM, so we will set up a [Windows XP] (https://download.cnet.com/Windows-XP-Mode/3001-18513_4-77683344.html) VM. After extracting with 7z, rename `VirtualXPVHD` to `VirtualXP.VHD` (or `VirtualXP.vdi` for linux host). Next, install 32 bit versions of `strings`, `PEview`, `dependency-walker`, `procmon`, `winshark`, `regshot` etc.
+- **Windows XP VM:** The malwares seems to be crashing on a previously installed Windows 10 VM, so we will set up a [Windows XP] (https://download.cnet.com/Windows-XP-Mode/3001-18513_4-77683344.html) VM. After extracting with 7z, rename `VirtualXPVHD` to `VirtualXP.VHD` (or `VirtualXP.vdi` for linux host). Next, install 32 bit versions of `strings`, `PEview`, `dependency-walker`, `procmon`, `winshark`, `regshot` etc.
 
 We can connect to the fake internet that we configured on our other linux VM. Obtain the ip address of this Windows VM using `ipconfig` and change ip (windows), gateway (linux), DNS (linux) etc from `Control Panel > Network Connections > Properties > Internet Protocol (TCP/IP) > Properties`. If everything goes well, we will be able to see the `inetsim` default homepage from the `Internet Explorer` browser.
 
@@ -20,15 +20,19 @@ We can connect to the fake internet that we configured on our other linux VM. Ob
 
 ## Executive Summary
 
- 
+This malware creates a version of itself in the host machine and seems to have the capacity of accessing the internet and sending random (unknown) data. Using dynamic analysis, we find that it makes requests to an external URL which we found during static analysis. 
 
 ## Indicators of Compromise
 
-
+- Both Lab03-01.exe and `vmx32to64.exe` have the same MD5: `d537acb8f56a1ce206bc35cf8ff959c0`. 
+- URL from static analysis: `www.practicalmalwareanalysis.com`.
+- `.dll` files (`wshtcpip.dll`, `ws2_32.dll`) using Socket.
 
 ## Mitigations
 
- 
+- Look for: `C:\Windows\system32\vmx32to64.exe` and delete it along with the original malware.
+- Block network access for `www.practicalmalwareanalysis.com`
+- Scan for `wshtcpip.dll`, `ws2_32.dll` files and delete.
 
 ## Evidence
 
@@ -48,8 +52,9 @@ vmx32to64.exe
 SOFTWARE\Microsoft\Windows\CurrentVersion\Run SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders AppData
 ```
 
-Using `PEview`, we see that the only import is `ExitProcess` and `kernal32.dll` is being used. There might be other imports as well, but we cannot say for sure as the strings are not in recognisable format. It’s also possible that the file is packed, but at least we know it’s not packed with `upx`, since `upx` cannot unpack this file. 
+Using `PEview`, we see that the only import is `kernal32.dll` used by `ExitProcess`. There might be other imports as well, but we cannot say for sure as the strings are not in recognisable format. It’s also possible that the file is packed, but at least we know it’s not packed with `upx`, since `upx` cannot unpack this file. 
 
+Before running the malware, we start `procmon` and `process-explorer`. In the `procmon` analysis, we find a `vmx32to64.exe` having the same MD5 hash (confirmed by VirusTotal). The `process-explorer` output (View > Lower Pane View > Handles) shows that the malware has created a mutant file `WinVMX32`. It also shows (View > Lower Pane View > DLLS) a few `Socket` based `.dll` files which confirms the internet access capability of this malware. We filter with ‘practicalmalwareanalysis’ in `Wireshark` and see that the URL makes requests following the DNS protocol.
 
 # Lab 3-2
 
