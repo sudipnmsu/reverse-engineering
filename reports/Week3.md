@@ -6,7 +6,7 @@ After being familiar with some tools for static analysis and learning some stati
 
 A short summary of how to prepare the environment before starting with basic analysis:
 
-- **Ubuntu** VM: Let’s set up a Ubuntu VM using VirtualBox and install `net-tools` and `inetsim`. From the VM toolbar, do: `Devices->Networking->Change "NAT" to "Internal Network"`. Add DHCP server using:
+- **Ubuntu** VM: Let’s set up a Ubuntu VM using VirtualBox and install `net-tools` and `inetsim`. From the VM toolbar, do: `Devices > Networking > Change "NAT" to "Internal Network"`. Add DHCP server using:
 
 `vboxmanage dhcpserver add --enable --network "YOUR_INTERNAL_NETWORK_NAME_HERE" --upperip 10.0.0.30 --lowerip 10.0.0.20 --ip 10.0.0.3 --netmask 255.255.255.0`
 
@@ -60,19 +60,28 @@ Before running the malware, we start `procmon` and `process-explorer`. In the `p
 
 ## Executive Summary
 
-
+This `.dll` file runs as a service with the association of `svchost.exe` process and communicates with the outside world using an URL `www.practicalmalwareanalysis.com`. We do not have any evidence that it sends any data from the host, but we see it performing GET operation.
 
 ## Indicators of Compromise
 
-
+- Communicates with `www.practicalmalwareanalysis.com`.
+- MD5: `84882c9d43e23d63b82004fae74ebb61`
+- Description text that indicates it collects and reports any change of information over the network.
+- See if any of the `svchost.exe` is matching with the Display Name or Description of this malware.
 
 ## Mitigations
 
+- Look for network signatures to detect the pattern for this malware and block it.
+- Scan using the hash and delete it.
 
 
 ## Evidence
 
 The basic `strings` command produces a much bigger output than we usually see. For a better organized report, we open the `.dll` file using `PEview`. We see some of the imported functions `OpenService`, `DeleteService`, `CreateService` which probably being used to manipulating services and some functions `RegCreateKey`, `RegSetValueEx`, `RegOpenKeyEx` for manipulating registry. The `HttpSendRequestA` `InternetOpenA` etc functions are a possible indicator that the file has networking capabilities.
+
+From the export address table in `PEview`, we assume that we need to install the `.dll` file to run it. We can try installing the malware using this command: `C:\rundll32.exe \path-to-file\Lab03-02.dll, installA`. We need to take snapshots of the registry before and after the installation process and compare the output. The comparison indicates a service `IPRIP` created by the malware. As we know from Lab-01, `.dll` file typically needs an associate `.exe` file to run, we see a `.exe` file named as `svchost.exe` under ‘Values Added’ section. To run this file properly, we launch it as a service using `C:\net start iprip`. 
+
+There are several `svchost.exe` listed on Process Explorer, we can search for `Lab03-02.dll` to look for the `svchost.exe` that is running the malware and note its PID (1080 for this experiment). In `procmon`, we can use this PID to locate the malware. The malware installs itself with the display name of `Intranet Network Awareness (INA+)` and description indicates that it collects network information and notices information changes. There are socket `.dll` evidences (`wshtcpip.dll`, `ws2_32.dll`) like the previous lab to prove that it communicates with the network, `www.practicalmalwareanalysis.com` to be specific. We see that it performs a GET request on port 80 using NetCat - the parts that we can use as network signatures are GET request over serve.html and `User-Agent: YOUR_DEVICE_NAME Windows XP 6.11`.
 
 # Lab 3-3
 
