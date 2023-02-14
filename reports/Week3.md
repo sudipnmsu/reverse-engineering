@@ -83,7 +83,7 @@ From the export address table in `PEview`, we assume that we need to install the
 
 There are several `svchost.exe` listed on Process Explorer, we can search for `Lab03-02.dll` to look for the `svchost.exe` that is running the malware and note its PID (1080 for this experiment). In `procmon`, we can use this PID to locate the malware. The malware installs itself with the display name of `Intranet Network Awareness (INA+)` and description indicates that it collects network information and notices information changes. There are socket `.dll` evidences (`wshtcpip.dll`, `ws2_32.dll`) like the previous lab to prove that it communicates with the network, `www.practicalmalwareanalysis.com` to be specific. We see that it performs a GET request on port 80 using NetCat - the parts that we can use as network signatures are GET request over serve.html and `User-Agent: YOUR_DEVICE_NAME Windows XP 6.11`. [^1]
 
-[^1] The `NetCat` evidence is taken from the book’s solution. I couldn’t find a working version for XP and test it by myself.
+[^1]: The `NetCat` evidence is taken from the book’s solution. I couldn’t find a working version for XP and test it by myself.
 
 
 # Lab 3-3
