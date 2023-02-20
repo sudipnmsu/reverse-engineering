@@ -1,4 +1,4 @@
-# Week 4: Assembly Code & Ghidra 
+# Week 4: Assembly Code Review
 
 ## Q/A Section:
 
@@ -63,29 +63,31 @@
 **Answer:** This instruction clears EAX register and sets the result 0 to EAX.
 
 
-##Grad Only:
+## Grad Only:
 
 I) What does the `leave` instruction do in terms of registers to leave a stack frame?
 
-**Answer:**
+**Answer:** It moves EBP to ESP and pops EBP.
 
 II) What `pop` instruction is `retn` equivalent to?
 
-**Answer:**
+**Answer:** `pop [return_address]` is equivalent to `ret`.
 
 III) What is a stack overflow?
 
-**Answer:**
+**Answer:** It is an overflow error which happens when the program attempts to use more memory in the call stack pointer than it’s been allocated. 
 
 IV) What is a segmentation fault (a.k.a. a segfault)?
 
-**Answer:**
+**Answer:** When a program tries to access any memory that is not allowed to access, that is called segmentation fault.
 
 V) What are the ESI and EDI registers for?
 
-**Answer:**
+**Answer:** They are general purpose registers which often are used as pointers for source address (ESI) and destination address (EDI) while copying a block of data.
 
-Crack-Me Solution:
+## Crack-Me Solution:
+
+
 
 
 
