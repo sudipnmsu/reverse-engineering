@@ -87,6 +87,12 @@
 
 ## Crack-Me Solution:
 
+We start by opening the `keyg3nme` file in Ghidra and look for the `main` function under the `Symbol Tree` section. Double click on the `main` and we will see some decompiled C code. The main function has a few variables at the beginning, then a `printf` statement, followed by a `scanf`, a `validate_key` function and two condition logic blocks.
+
+We see the `validate_key` function in the `Symbol Tree` and inside it checks if `param_1 % 0x4c7 == 0` and returns a boolean value. The decimal value of `0x4c7` is `1223` which is a prime number. This means that if `param_1` is either ‘1223’ or ‘multiple of 1223’ or ‘0’, the function will return true. The functionality of `CONCAT71` is not clear, it takes the `validate_key` function’s return value as 1 parameter and another undefined 7-byte variable and checks if the output is 1 after typecasting it to integer.
+
+We check our finding by running the binary `./keyg3nme`. As mentioned above, any input that is ‘1223’ or ‘multiple of 1223’ or ‘0’, the output shows `Good job mate…`, and for any other input, the output is ‘nope.’. 
+
 
 
 
