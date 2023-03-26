@@ -103,8 +103,13 @@ for j in range(0, 10):
 ### Keygen code:
 
 ```
+import string
+import random
+
+# # # # # # # # # # # # # # # # # # 
 # Some working passwords from a run:
-#
+# # # # # # # # # # # # # # # # # # 
+
 # password: Co4msplm60FfFTbX
 # password: 2ytlUupp5r8N8jAL
 # password: TrUF8uCCajrvrfPV
@@ -112,14 +117,19 @@ for j in range(0, 10):
 # password: ckFIBAsrH1YKY7fr
 # password: fsFKYPnlK2OcOygW
 
-import string
-import random
+# # # # # # # 
+# Draft rules:
+# # # # # # # 
 
-def password_generator(size=16, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
-	return ''.join(random.choice(chars) for _ in range(size))
+# rule 1: password[1] + password[3] - password[5] == password[6]
+# rule 2: password[6] ^ password[7] < 3
+# rule 3: password[10] == password[12]
+# rule 4: password[8] ^ password[7] > 4 
+# rule 5: password[8] != password[9]
+# rule 6: password[12] ^ password[8] ^ password[9] == password[10] > 3
 
 def get_single_char(size=1, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
-	return ''.join(random.choice(chars) for _ in range(size))
+    return ''.join(random.choice(chars) for _ in range(size))
 
 def valid_password(password):
     if((ord(password[1]) + ord(password[3]) - ord(password[5]) == ord(password[6])) and 
@@ -131,17 +141,6 @@ def valid_password(password):
         return True
     else:
         return False
-
-password_list = []
-
-# generate 10 password
-
-# rule 1: password[1] + password[3] - password[5] == password[6]
-# rule 2: password[6] ^ password[7] < 3
-# rule 3: password[10] == password[12]
-# rule 4: password[8] ^ password[7] > 4 
-# rule 5: password[8] != password[9]
-# rule 6: password[12] ^ password[8] ^ password[9] == password[10] > 3
 
 def get_char_at_8(char_at_7):
     print('char_at_7: ' + char_at_7)
@@ -156,7 +155,7 @@ def get_char_at_9(char_at_10, char_at_8):
     print('char_at_8: ' + char_at_8)
     for i in range(0, 100):
         char_at_9 = str(get_single_char())
-        if (ord(char_at_10) ^ ord(char_at_8) ^ ord(char_at_9) == ord(char_at_10) > 3 and (ord(char_at_8) != ord(char_at_9))):
+        if (ord(char_at_10) ^ ord(char_at_8) ^ ord(char_at_9) != (ord(char_at_10) < 3) and (ord(char_at_8) != ord(char_at_9))):
             return char_at_9
     return None
 
@@ -199,6 +198,7 @@ for i in range(0, 100):
         print('password: ' + password)
     except:
         print("An error occured! Trying again...")
+
 
 ```
 
