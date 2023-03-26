@@ -110,6 +110,23 @@ for j in range(0, 10):
 
 ## Control Flow 3:
 
+This crackme is a bit complicated from the above two. We follow a ‘trial and error’ approach in the keygen program to find out some possible combinations of the password. The rules are very different from previous crackmes as well:
+
+- `main`: this time the password is `exactly` 16 characters long.
+- `rock`: equation to pass - `password[1] + password[3] - password[5] == password[6]`.
+- `paper`: equation to pass - `password[6] ^ password[7] < 3`.
+- `scissors`: equation to pass - `password[10] == password[12]`.
+- `lizard`: equation to pass - `password[8] ^ password[7] > 4` (reverse of the original equation).
+- `spock`: equation to pass - `password[8] != password[9]` (reverse of the original equation) and `password[12] ^ password[8] ^ password[9] != password[10] < 3`.
+
+We inspect the equations and list down the independent and dependent positions:
+
+**Independent positions:** `0, 2, 4, 7, 10, 11, 13, 14, and 15.`
+**Dependent positions:** `1, 3, 5, 6, 8, 9, and 12.`
+
+We generate a random character for each run for the independent positions and use those characters to get the values for the dependent positions. For each of the dependent positions, we create a dedicated function and use the equations we found before. Although some of the iterations fail in one or multiple cases, we will also see some successful iterations and get multiple valid passwords.
+
+
 ### Keygen code:
 
 ```
@@ -140,17 +157,6 @@ import random
 
 def get_single_char(size=1, chars=string.ascii_uppercase + string.ascii_lowercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
-
-def valid_password(password):
-    if((ord(password[1]) + ord(password[3]) - ord(password[5]) == ord(password[6])) and 
-    (ord(password[6]) ^ ord(password[7]) < 3) and
-    (ord(password[10]) == ord(password[12])) and
-    (ord(password[8]) ^ ord(password[7]) > 4) and
-    (ord(password[8]) != ord(password[9])) and
-    (ord(password[12]) ^ ord(password[8]) ^ ord(password[9]) == ord(password[10]) > 3)):
-        return True
-    else:
-        return False
 
 def get_char_at_8(char_at_7):
     print('char_at_7: ' + char_at_7)
