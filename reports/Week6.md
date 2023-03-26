@@ -29,7 +29,7 @@ We get the following information with `ghidra` in the main function:
 
 All the control flow problems start from `main` and have to land on the sink `win` function to crack the password. We can start inspecting the code from `main` and keep going through `rock`, `paper`, `scissors`, `lizard`, `spock` and finally reach the function `win`. As we start inspecting the code, we can write the rules along the way:
 
-- `main`: password is more than 16 characters.
+- `main`: password is 16 characters or more.
 - `rock`: `input[3]` is ‘2’.
 - `paper`: `input[7]` is `%` by guessing `input[7] = 37` so that `input[7] - 37` equals 0 which leads us to bypass the `uVar1 & 1 = 0` if statement.
 - `scissors`: The if statement in the middle of the code shows that `input[0]` has to be `A` (65) to go to the next function.
@@ -68,7 +68,17 @@ for j in range(0, 10):
 
 ## Control Flow 2:
 
+This crackme is almost similar to the `control flow 1`. We follow the same approach as `control flow 1` to find out the characters and their positions and write our rules as follows:
+
+- `main`: password is 16 characters or more.
+- `rock`: `input[6]` is ‘Y’.
+- `paper`: `input[8]` is `#` by making `input[8] - 35` equals 0 which leads us to bypass the `uVar1 & 1 = 0` if statement.
+- `scissors`: `switch` case value needs to be `A` which is the value of `input[10]`.
+- `lizard`: `switch` case value needs to be `6` which is the value of `input[13]`.
+- `spock`: last `switch` statement to set the value of `input[11]` to `*` and finally land on the `win` function.
+
 ### Keygen code:
+
 
 ```
 import string
