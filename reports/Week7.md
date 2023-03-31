@@ -5,7 +5,7 @@
 We see that all the ransom programs are structurally almost similar to each other. What each program does:
 
 - Take the encrypted `important.docx.pay_up` file as input.
-- Ask for the key.
+- Ask for the key (hardcoded in the program).
 - If the key is correct, it will decrypt the file successfully.
 
 There is another file `secret.txt.pay_up` which we probably will be able to decrypt if we can pass the file as a argument to the `decrypt` function. Instead of doing that, let’s see the `decrypt` function of each of the program and try to understand what they do for encryption.
