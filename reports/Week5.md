@@ -1,4 +1,4 @@
-# Week 5: Binary Reverse Engineering Challenges
+# Week 5: External (Unsafe) Crackme Challenges
 
 ## Crackme1:
 
@@ -130,6 +130,8 @@ def generate_serial():
     valid_chars = get_valid_chars()
     
     # Paper
+    # The idea of using lamda function was taken from here: 
+    # https://bin.re/blog/crackmes-de-sevebs-crackme05/
     
     serial_number[8] = calculate(lambda x: x ^ serial_number[10] < (58-48), valid_chars)
     serial_number[5] = calculate(lambda x: x ^ serial_number[13] < (58-48), valid_chars)
@@ -140,11 +142,11 @@ def generate_serial():
     serial_number[0] = (serial_number[5] ^ serial_number[13]) + 48
     serial_number[18] = (serial_number[5] ^ serial_number[13]) + 48 
 
-    ## Scissors
+    # Scissors
     serial_number[1] = calculate(lambda x: x + serial_number[2] >= 171, valid_chars)
     serial_number[16] = calculate(lambda x: x + serial_number[17] >= 171 and serial_number[1] + serial_number[2] != x + serial_number[17], valid_chars)
 
-    ## Cracker
+    # Cracker
     serial_number[4] = 45
     serial_number[9] = 45
     serial_number[14] = 45 
@@ -174,7 +176,97 @@ The calculation may fail for some runs. Some working serial numbers are:
 0Lr5-Q9ga-dBiQ-5xp0
 ```
 
+## keygenme:
 
+### Learning: the `python` code does not work
+
+I assumed the `clef` input would be 6 characters long by calculating the number of `do while` loop. Then I started renaming the functions and input from the inner-most loop (sample screenshot attached). After I compiled the code, it produced `clef` with 6 characters, but the value couldn’t get the desired output. 
+
+In the next step, I tried to find a working solution to understand the issues with my code, and found [this blog](https://github.com/baderj/crackmes/tree/master/TwistedTux's%20First%20keygenMe). I compiled the solution code (**written in cpp**) from my macbook, and used the value in the crackme exe running on ubuntu VM, it still didn’t work! Later I figured out that, the `srand` and `rand` function may generate different outputs in different machines even if the seed value is the same. Although I adjusted my python code by taking help from the cpp code (specially for `func_4` and `func_6`), there was hardly any chance that the `random` function in python would generate the same value as the `rand` function of c/cpp. 
+
+**Conclusion:** The solution works if we run it in the same machine as the crackme executable. There is probably no way a python script can be used for solving this crackme because of the `srand` and `rand` functions, at least I couldn’t figure it out.
+
+### Sample screenshots:
+
+![keygenme-func_1](images/keygenme-func_1.png)
+
+![keygenme-func_4](images/keygenme-func_4.png)
+
+### Python code: (didn't work) 
+
+```
+
+import random
+
+def func_1(length):
+    result = (length ^ 0x3b) & 0x3f
+    return result
+
+def func_2(pseudo):
+    output = 0;
+    length = len(pseudo)
+    for i in range(0, length):
+        output += ord(pseudo[i]); 
+    result = (output ^ 0x4f) & 0x3f
+    return result
+
+def func_3(pseudo):
+    output = 1;
+    length = len(pseudo)
+    for i in range(0, length):
+        output *= ord(pseudo[i]); 
+    result = (output ^ 0x55) & 0x3f
+    return result
+
+def func_4(pseudo):
+    print('func_4:')
+    output = ord(pseudo[0])
+    length = len(pseudo)
+    for i in range(0, length):
+        if ord(pseudo[i]) > output:
+            output = ord(pseudo[i])
+
+    random.seed(output ^ 0xe)
+    result = random.randint(0, 10) & 0x3f
+    print()
+    return result
+
+def func_5(pseudo):
+    output = 0;
+    length = len(pseudo)
+    for i in range(0, length):
+        output += ord(pseudo[i]) * ord(pseudo[i])
+    result = (output ^ 0xef) & 0x3f
+    return result
+
+def func_6(pseudo_at_0):
+    print('func_6:')
+    random.seed(1)
+    for i in range(0, ord(pseudo_at_0)):
+        output = random.randint(0, 2000)
+    result = (output ^ 0xe5) & 0x3f
+    print()
+    return result
+
+
+pseudo = "l";
+pseudo_length = len(pseudo);
+static_string = "A-CHRDw87lNS0E9B2TibgpnMVys5XzvtOGJcYLU+4mjW6fxqZeF3Qa1rPhdKIouk";
+
+clef = ''
+
+clef += str(static_string[func_1(pseudo_length)])
+clef += str(static_string[func_2(pseudo)])
+clef += str(static_string[func_3(pseudo)])
+clef += str(static_string[func_4(pseudo)])
+clef += str(static_string[func_5(pseudo)])
+clef += str(static_string[func_6(pseudo[0])])
+
+print("pseudo: " + pseudo);
+print("clef: " + clef);
+
+
+```
 
 
 
