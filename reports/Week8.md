@@ -18,7 +18,7 @@ As we inspect `DLL_SINK`, we find that the function in line 61 is passing some `
 
 ![ss-dll-select-process](images/dll-injection/ss-dll-select-process.png)
 
-## DllMain: The Entry Point:
+## DllMain: The Entry Point
 
 Next, we move on to the `.dll` file. The entry function has three arguments and is checking the second argument to see if the function should exit or go to the next code block. This looks similar to what `DLLMain` do, thus we rename the function with the appropriate name and signature.
 
@@ -36,7 +36,7 @@ We run the malware exe in the Windows machine and observe it keeps showing a pop
 
 ![ss-dll-sleepy-func](images/dll-injection/ss-dll-sleepy-func.png)
 
-### Malware Activity:
+## Malware Activity:
 
 We finally conclude that the malware is showing a pop-up every 1 min with the string `Practical Malware Analysis [%d]`. `%d` is a count that increases beginning from 0. The malware stops if we kill and restart `explorer.exe`.
 
