@@ -37,8 +37,8 @@ output = ""
 size = 0
 
 with open(infile_path, "rb") as f:
-	while (byte := f.read(1)):
-    	byte = byte.hex()
+    while (byte := f.read(1)):
+        byte = byte.hex()
     	output += str(byte) + " "
     	size+=1
 
